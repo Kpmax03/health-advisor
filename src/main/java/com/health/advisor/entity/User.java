@@ -1,8 +1,6 @@
 package com.health.advisor.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +18,8 @@ public class User {
     @Column(unique = true)
     private String userName;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private HealthCondition healthCondition;
 
 }
