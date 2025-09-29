@@ -18,7 +18,8 @@ public class User {
     @Column(unique = true)
     private String userName;
     private String password;
-
+    private int age;
+    private String gender;
     @Enumerated(EnumType.STRING)
     private HealthCondition healthCondition;
 

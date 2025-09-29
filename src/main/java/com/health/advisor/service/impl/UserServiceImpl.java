@@ -31,15 +31,13 @@ public class UserServiceImpl implements UserService {
         return mapper.map(save,UserResponse.class);
     }
     @Override
-    public String DeleteUser(String userName, Principal principal) {
-        String owner = principal.getName();
+    public String DeleteUser(String userName,String password) {
 
-        User loggedUser = userRepository.findByUserName(owner).orElseThrow(()->new ResourceNotFoundException("userid not found"));
         User deletingUser = userRepository.findByUserName(userName).orElseThrow(()->new ResourceNotFoundException("userid not found"));
 
-        if(loggedUser==deletingUser){
+        if(deletingUser.getPassword().equals(password)){
             userRepository.delete(deletingUser);
-            return "deleted user of userName ="+userName;
+            return "deleted user of user account ="+userName;
         }else{
             return "you don't own to that account";
         }

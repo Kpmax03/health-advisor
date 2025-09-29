@@ -7,5 +7,5 @@ import java.security.Principal;
 
 public interface UserService {
     public UserResponse createUser(UserRequest userRequest);
-    public String DeleteUser(String userName , Principal principal);
+    public String DeleteUser(String userName,String password );
 }
