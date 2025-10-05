@@ -41,4 +41,14 @@ public class UserServiceImpl implements UserService {
             return "you don't own to that account";
         }
     }
+
+    @Override
+    public String login(String userName, String password) {
+        User user = userRepository.findByUserName(userName).orElseThrow(() -> new ResourceNotFoundException("username not found"));
+        if(user.getPassword().equals(password)){
+            return "ok";
+        }else{
+            throw new IllegalArgumentException("password incorrect");
+        }
+    }
 }

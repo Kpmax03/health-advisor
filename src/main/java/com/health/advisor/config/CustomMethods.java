@@ -5,7 +5,10 @@ import com.health.advisor.entity.User;
 
 public class CustomMethods {
     public static String getSystemToString(){
-        return "you are a health advisor AI . give advice according to user health";
+        return " You are a health advisor AI. \n" +
+                "            Based on air quality, weather, and user's health profile,\n" +
+                "            provide practical health recommendations to improve well-being and safety.\n" +
+                "            Focus on prevention and clear, human-like explanations. ";
     }
 
     public static String getUserToString(User user){

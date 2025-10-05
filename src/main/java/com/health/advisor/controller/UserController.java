@@ -24,5 +24,8 @@ public class UserController {
         public ResponseEntity<String> deleteUser(@RequestParam String userName,@RequestParam String password){
             return ResponseEntity.ok(userService.DeleteUser(userName,password));
         }
-
+        @PostMapping("/login")
+        public ResponseEntity<String> login(@RequestParam String userName,@RequestParam String password){
+            return ResponseEntity.ok(userService.login(userName,password));
+        }
 }

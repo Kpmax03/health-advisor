@@ -3,7 +3,7 @@ package com.health.advisor.config;
 import com.health.advisor.RequestDto.WeatherApiRequest;
 import com.health.advisor.entity.WeatherData;
 
-public class WeatherConvertor {
+public class WeatherMapper {
 
     public static WeatherData toEntity(WeatherApiRequest dto) {
         if (dto == null) {

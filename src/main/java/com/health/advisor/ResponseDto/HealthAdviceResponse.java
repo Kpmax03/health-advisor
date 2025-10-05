@@ -1,7 +1,6 @@
 package com.health.advisor.ResponseDto;
 
-import com.health.advisor.RequestDto.AirQualityRequest;
-import com.health.advisor.entity.AirQuality;
+import com.health.advisor.entity.AirQualityEntity;
 import com.health.advisor.enums.HealthCondition;
 import lombok.*;
 
@@ -12,6 +11,6 @@ public class HealthAdviceResponse {
         private HealthCondition healthCondition;
         private String riskLevel; // INTERMEDIATE, VERY_RISKY
         private String advice;
-        private AirQuality airQuality;
+        private AirQualityEntity airQuality;
     }
 

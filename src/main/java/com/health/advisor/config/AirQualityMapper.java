@@ -3,108 +3,48 @@ package com.health.advisor.config;
 
 
 import com.health.advisor.RequestDto.AirQualityRequest;
-import com.health.advisor.entity.AirQuality;
-import com.health.advisor.entity.CityEntity;
-import com.health.advisor.entity.ForecastItemEntity;
-import com.health.advisor.entity.IAQIEntity;
+import com.health.advisor.entity.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AirQualityMapper {
-
-    public static AirQuality toEntity(AirQualityRequest dto) {
+    public static AirQualityEntity toEntity(AirQualityRequest dto) {
         if (dto == null || dto.getData() == null) return null;
 
         AirQualityRequest.Data data = dto.getData();
+        AirQualityRequest.IAQI iaqi = data.getIaqi();
+        AirQualityRequest.City city = data.getCity();
 
-        // Map city
-        CityEntity city = null;
-        if (data.getCity() != null) {
-            List<Double> geo = data.getCity().getGeo();
-            double lat = (geo != null && geo.size() > 0) ? geo.get(0) : 0.0;
-            double lon = (geo != null && geo.size() > 1) ? geo.get(1) : 0.0;
-
-            city = new CityEntity(
-                    data.getCity().getName(),
-                    data.getCity().getUrl(),
-                    data.getCity().getLocation(),
-                    lat,
-                    lon
-            );
-        }
-
-        // Map IAQI
-        IAQIEntity iaqi = null;
-        if (data.getIaqi() != null) {
-            AirQualityRequest.IAQI i = data.getIaqi();
-            iaqi = new IAQIEntity(null,
-                    getVal(i.getCo()),
-                    getVal(i.getH()),
-                    getVal(i.getNo2()),
-                    getVal(i.getO3()),
-                    getVal(i.getP()),
-                    getVal(i.getPm10()),
-                    getVal(i.getPm25()),
-                    getVal(i.getSo2()),
-                    getVal(i.getT()),
-                    getVal(i.getW())
-            );
-        }
-
-        // Map forecasts
-        List<ForecastItemEntity> forecasts = null;
-        if (data.getForecast() != null && data.getForecast().getDaily() != null) {
-            forecasts = mapForecasts(data.getForecast().getDaily());
-        }
-
-        // Parse time
-        LocalDateTime measurementTime = null;
-        if (data.getTime() != null && data.getTime().getIso() != null) {
-            measurementTime = LocalDateTime.parse(
-                    data.getTime().getIso(),
-                    DateTimeFormatter.ISO_OFFSET_DATE_TIME
-            );
-        }
-
-        // Build entity
-        AirQuality entity = new AirQuality();
-        entity.setAqi(data.getAqi());
-        entity.setIdx(data.getIdx());
-        entity.setDominantPollutant(data.getDominentpol());
-        entity.setCity(city);
-        entity.setIaqi(iaqi);
-        entity.setMeasurementTime(measurementTime);
-        entity.setForecasts(forecasts);
-
-        return entity;
-    }
-
-    private static Double getVal(AirQualityRequest.Value v) {
-        return v != null ? v.getV() : null;
-    }
-
-    private static List<ForecastItemEntity> mapForecasts(AirQualityRequest.Daily daily) {
-        return List.of(
-                mapForecastList("pm25", daily.getPm25()),
-                mapForecastList("pm10", daily.getPm10()),
-                mapForecastList("o3", daily.getO3()),
-                mapForecastList("uvi", daily.getUvi())
-        ).stream().flatMap(List::stream).collect(Collectors.toList());
-    }
-
-    private static List<ForecastItemEntity> mapForecastList(String type, List<AirQualityRequest.ForecastItem> items) {
-        if (items == null) return List.of();
-        return items.stream().map(f -> new ForecastItemEntity(
-                null,
-                type,
-                LocalDate.parse(f.getDay()), // forecast day is yyyy-MM-dd
-                f.getAvg(),
-                f.getMax(),
-                f.getMin()
-        )).collect(Collectors.toList());
+        return AirQualityEntity.builder()
+                .aqi(data.getAqi())
+                .dominantPollutant(data.getDominentpol())
+                .cityName(city.getName())
+                .latitude(city.getGeo() != null && !city.getGeo().isEmpty() ? city.getGeo().get(0) : 0)
+                .longitude(city.getGeo() != null && city.getGeo().size() > 1 ? city.getGeo().get(1) : 0)
+                .co(iaqi != null && iaqi.getCo() != null ? iaqi.getCo().getV() : null)
+                .h(iaqi != null && iaqi.getH() != null ? iaqi.getH().getV() : null)
+                .no2(iaqi != null && iaqi.getNo2() != null ? iaqi.getNo2().getV() : null)
+                .o3(iaqi != null && iaqi.getO3() != null ? iaqi.getO3().getV() : null)
+                .p(iaqi != null && iaqi.getP() != null ? iaqi.getP().getV() : null)
+                .pm10(iaqi != null && iaqi.getPm10() != null ? iaqi.getPm10().getV() : null)
+                .pm25(iaqi != null && iaqi.getPm25() != null ? iaqi.getPm25().getV() : null)
+                .so2(iaqi != null && iaqi.getSo2() != null ? iaqi.getSo2().getV() : null)
+                .t(iaqi != null && iaqi.getT() != null ? iaqi.getT().getV() : null)
+                .w(iaqi != null && iaqi.getW() != null ? iaqi.getW().getV() : null)
+                .measurementTime(data.getTime() != null ?
+                        LocalDateTime.ofEpochSecond(data.getTime().getV(), 0, java.time.ZoneOffset.UTC)
+                        : null)
+                .build();
     }
 }
+

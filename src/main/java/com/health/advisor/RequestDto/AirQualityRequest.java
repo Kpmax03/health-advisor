@@ -11,7 +11,7 @@ public class AirQualityRequest {
         private Data data;
 
         // getters and setters
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Data {
             private int aqi;
             private int idx;
@@ -24,13 +24,13 @@ public class AirQualityRequest {
             private Debug debug;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Attribution {
             private String url;
             private String name;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class City {
             private List<Double> geo;
             private String name;
@@ -38,7 +38,7 @@ public class AirQualityRequest {
             private String location;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class IAQI {
             private Value co;
             private Value h;
@@ -52,12 +52,12 @@ public class AirQualityRequest {
             private Value w;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Value {
             private double v;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Time {
             private String s;
             private String tz;
@@ -65,12 +65,12 @@ public class AirQualityRequest {
             private String iso;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Forecast {
             private Daily daily;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Daily {
             private List<ForecastItem> o3;
             private List<ForecastItem> pm10;
@@ -78,7 +78,7 @@ public class AirQualityRequest {
             private List<ForecastItem> uvi;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class ForecastItem {
             private double avg;
             private String day;
@@ -86,7 +86,7 @@ public class AirQualityRequest {
             private double min;
             // getters and setters
         }
-        @Getter@Setter@AllArgsConstructor@NoArgsConstructor
+        @Getter@Setter@AllArgsConstructor@NoArgsConstructor@ToString
         public static class Debug {
             private String sync;
             // getters and setters

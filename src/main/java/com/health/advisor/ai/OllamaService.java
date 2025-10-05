@@ -2,8 +2,7 @@ package com.health.advisor.ai;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.health.advisor.config.CustomMethods;
-import com.health.advisor.entity.AirQuality;
-import com.health.advisor.entity.User;
+import com.health.advisor.entity.*;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,9 +22,9 @@ public class OllamaService {
         this.chatClient = builder.build();
     }
 
-    public String getAdvice(User user, AirQuality airQuality) throws JsonProcessingException {
+    public String getAdvice(User user, AirQualityEntity airQuality, WeatherData weatherData) throws JsonProcessingException {
         String content =chatClient
-                .prompt(airQuality.toString())
+                .prompt(airQuality.toString()+"."+weatherData.toString())
                 .system(CustomMethods.getSystemToString())
                 .user(CustomMethods.getUserToString(user))
                 .call()
