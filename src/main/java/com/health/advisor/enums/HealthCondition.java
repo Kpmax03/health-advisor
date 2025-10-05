@@ -1,4 +1,4 @@
-package com.health.advisor.entity;
+package com.health.advisor.enums;
 
 public enum HealthCondition {
     ASTHMA,

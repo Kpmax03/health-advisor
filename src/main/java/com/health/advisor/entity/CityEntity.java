@@ -1,14 +1,14 @@
 package com.health.advisor.entity;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.*;
-
 @Embeddable
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor@ToString
  public class CityEntity {
+
     private String name;
     private String url;
     private String location;

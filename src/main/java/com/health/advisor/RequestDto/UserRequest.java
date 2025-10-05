@@ -1,8 +1,6 @@
 package com.health.advisor.RequestDto;
 
-import com.health.advisor.entity.HealthCondition;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.health.advisor.enums.HealthCondition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

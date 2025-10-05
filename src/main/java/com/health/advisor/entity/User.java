@@ -1,16 +1,15 @@
 package com.health.advisor.entity;
 
+import com.health.advisor.enums.HealthCondition;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id
