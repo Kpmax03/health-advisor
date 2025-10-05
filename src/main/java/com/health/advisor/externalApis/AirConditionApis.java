@@ -16,7 +16,6 @@ public class AirConditionApis {
     @Autowired
     private AirQualityRepository airQualityRepository;
 
-    @Scheduled(fixedRate = 60000)
     public AirQuality getAirQuality(String city){
         String API_URL="https://api.waqi.info/feed/"+city+"/?token="+System.getenv("AQICN_API_KEY");
 
