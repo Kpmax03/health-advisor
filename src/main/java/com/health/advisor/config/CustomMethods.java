@@ -7,6 +7,7 @@ public class CustomMethods {
     public static String getSystemToString(){
         return "you are a health advisor AI . give advice according to user health";
     }
+
     public static String getUserToString(User user){
         return String.format(
                 "User details: { name: %s, age: %d, gender: %s, healthCondition: %s }. " +
@@ -18,6 +19,7 @@ public class CustomMethods {
                 user.getHealthCondition()
         );
     }
+
     public static String getAqiCategory(int aqi) {
         if (aqi <= 50) return "Good";
         else if (aqi <= 100) return "Moderate";

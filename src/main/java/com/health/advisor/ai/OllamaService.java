@@ -23,7 +23,7 @@ public class OllamaService {
         this.chatClient = builder.build();
     }
 
-    public String getResponse(User user, AirQuality airQuality) throws JsonProcessingException {
+    public String getAdvice(User user, AirQuality airQuality) throws JsonProcessingException {
         String content =chatClient
                 .prompt(airQuality.toString())
                 .system(CustomMethods.getSystemToString())
@@ -37,6 +37,7 @@ public class OllamaService {
     public Flux<String> getChatResponse(String query){
         return imMemoryChatClient
                 .prompt(query)
-                .stream().content();
+                .stream()
+                .content();
     }
 }
