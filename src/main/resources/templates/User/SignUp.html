@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Sign Up</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Custom Styles for Centering -->
+  <style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Inter', sans-serif;
+    }
+    .signup-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card {
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        max-width: 400px;
+        width: 100%;
+    }
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+    }
+    .btn-primary {
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+        border-radius: 0.5rem;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #4338ca;
+        border-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+<div class="signup-container py-5">
+  <div class="card p-4 p-md-5">
+    <div class="text-center mb-4">
+      <!-- Using a simple icon/logo placeholder -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#4f46e5" class="bi bi-person-circle mx-auto mb-2" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+      </svg>
+      <h2 class="h4 fw-bold">Create Your Account</h2>
+      <p class="text-muted">Fill out the details below to sign up.</p>
+    </div>
+
+    <form method="post" action="/SignUp">
+      <!-- Username/Email Field -->
+      <div class="mb-3">
+        <label for="userName" class="form-label">Username / Email</label>
+        <input type="email" class="form-control" id="userName" required placeholder="Enter your email">
+        <div class="invalid-feedback">Please enter a valid email/username.</div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" required placeholder="Enter your password">
+        <div class="invalid-feedback">Please enter a password.</div>
+      </div>
+
+      <!-- Age Field (Corrected to type="number") -->
+      <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" class="form-control" id="age" required min="1" max="120" placeholder="Enter your age">
+        <div class="invalid-feedback">Please enter a valid age.</div>
+      </div>
+
+      <!-- Gender Dropdown -->
+      <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option value="MALE">MALE</option>
+          <option value="FEMALE">FEMALE</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+        <div class="invalid-feedback">Please select your gender.</div>
+      </div>
+
+      <!-- Health Condition Dropdown -->
+      <div class="mb-4">
+        <label for="healthCondition" class="form-label">Health Condition</label>
+        <select class="form-select" id="healthCondition" required>
+          <option value="NONE" selected>NONE</option>
+          <option value="ASTHMA">ASTHMA</option>
+          <option value="COPD">COPD</option>
+          <option value="HEART_DISEASE">HEART DISEASE</option>
+          <option value="PREGNANT">PREGNANT</option>
+          <option value="ALLERGIES">ALLERGIES</option>
+          <option value="DIABETES">DIABETES</option>
+          <option value="HYPERTENSION">HYPERTENSION</option>
+          <option value="KIDNEY_DISEASE">KIDNEY DISEASE</option>
+          <option value="LUNG_DISEASE">LUNG DISEASE</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100 mb-3">
+        Sign Up
+      </button>
+    </form>
+
+    <!-- Message Area -->
+    <div id="messageArea" class="mt-3 text-center d-none">
+      <!-- Messages will be displayed here -->
+    </div>
+
+    <p class="mt-3 text-center text-secondary small">
+      Already have an account?
+      <a href="Login" class="text-decoration-none text-primary fw-semibold">
+        Click To Login
+      </a>
+    </p>
+
+  </div>
+</div>
+
+<!-- Axios CDN (for simplified API calls) -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  // --- Utility Functions ---
+
+  /**
+   * Shows a status message to the user.
+   * @param {string} text - The message content.
+   * @param {string} type - 'success' or 'error' for styling.
+   */
+  function showMessage(text, type) {
+      const messageArea = document.getElementById('messageArea');
+      messageArea.classList.remove('d-none');
+      messageArea.innerHTML = `<div class="alert alert-${type === 'success' ? 'success' : 'danger'} rounded-3" role="alert">
+          ${text}
+      </div>`;
+  }
+
+  // --- Main Logic ---
+
+  document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signupForm');
+
+      form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Add Bootstrap validation styling
+          if (!form.checkValidity()) {
+              form.classList.add('was-validated');
+              return;
+          }
+
+          // 1. Collect form data
+          const userName = document.getElementById('userName').value;
+          const password = document.getElementById('password').value;
+          const age = document.getElementById('age').value;
+          const gender = document.getElementById('gender').value;
+          const healthCondition = document.getElementById('healthCondition').value;
+
+          const userData = {
+              userName,
+              password,
+              age: parseInt(age), // Ensure age is sent as an integer
+              gender,
+              healthCondition
+          };
+
+          // Clear previous messages
+          document.getElementById('messageArea').classList.add('d-none');
+
+          try {
+              // 2. Make the POST request to the Spring Boot backend
+              const response = await axios.post("http://localhost:8080/user/signup", userData, {
+                  headers: {
+                      // Axios defaults to 'application/json', but it's good practice to be explicit
+                      'Content-Type': 'application/json'
+                  }
+              });
+
+              // Success response (assuming the server sends back a success message or data)
+              const message = response.data.message || "Sign up successful!";
+              showMessage(message, 'success');
+              form.reset(); // Clear the form on success
+              form.classList.remove('was-validated');
+
+          } catch (error) {
+              console.error("Axios Error:", error);
+              let errorMessage = "Error connecting to backend.";
+
+              // Check for the specific CORS/Network errors you were seeing
+              if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+                  errorMessage = `
+                      <strong>Connection Error!</strong> This is a likely CORS issue or the server is down.
+                      <br>
+                      <strong>Action needed:</strong> Please ensure your Spring Boot backend (on port 8080)
+                      is running and configured with a Global CORS Policy that allows requests from your frontend's origin (e.g., http://localhost:3000).
+                      <br>
+                      Also check the Spring Boot logs for a 403 Forbidden status, which indicates an internal security filter is blocking the request.
+                  `;
+              } else if (error.response) {
+                  // The server responded, but with an error status (e.g., 400, 403, 500)
+                  const status = error.response.status;
+                  const data = error.response.data.message || JSON.stringify(error.response.data);
+
+                  // We specifically check for 403 here
+                  if (status === 403) {
+                       errorMessage = `<strong>403 Forbidden:</strong> The server rejected the request.
+                          <br>
+                          **Fix:** Check Spring Boot for: (1) Missing CORS configuration (or incorrect origin), or (2) An internal security filter (even without Spring Security) or CSRF protection blocking the request.
+                          <br>
+                          Server response: ${data}`;
+                  } else {
+                      errorMessage = `Request failed with status ${status}. Server details: ${data}`;
+                  }
+              }
+
+              showMessage(errorMessage, 'error');
+          }
+      });
+
+      // Remove the 'was-validated' class if the user starts typing after an error
+      form.querySelectorAll('input, select').forEach(element => {
+          element.addEventListener('input', () => {
+              if (form.classList.contains('was-validated')) {
+                  // Simple way to reset validity state on interaction
+                  // In a real app, you'd want more granular validation
+                  element.checkValidity();
+              }
+          });
+      });
+  });
+</script>
+</body>
+</html>

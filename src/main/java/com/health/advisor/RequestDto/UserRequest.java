@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class  UserRequest {
 
     @NotNull(message = "username cant be null")
     private String userName;

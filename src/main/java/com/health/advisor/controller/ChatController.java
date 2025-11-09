@@ -14,7 +14,7 @@ public class ChatController {
     private ChatService chatService;
 
     @GetMapping("/ask")
-    public ResponseEntity<Flux<String>> chat(@RequestParam("q") String query){
+    public ResponseEntity<Flux<String>> chat(@RequestParam("q") String query,@RequestParam String loggedUser){
         return ResponseEntity.ok(chatService.chat(query));
     }
 }
